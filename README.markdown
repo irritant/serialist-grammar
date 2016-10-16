@@ -5,7 +5,7 @@ Serialist-Grammar provides a concise syntax for the expression and transformatio
 ## Usage
 
 1. Install [PEG.js](http://pegjs.org)
-2. Use PEG.js to [generate a parser](http://pegjs.org/documentation#generating-a-parser) from `serialist-grammar.js`
+2. Use PEG.js to [generate a parser](http://pegjs.org/documentation#generating-a-parser) from `serialist-grammar.pegjs`
 3. Use the parser to process input according to the syntax defined below
 4. Map the parser output to your target application
 
