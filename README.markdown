@@ -112,7 +112,7 @@ Slicing uses [Array.prototype.slice](https://developer.mozilla.org/en-US/docs/We
 
 #### Math Expressions
 
-Serialist-Grammar supports addition, subtraction, multiplication and division expressions with the following limitations:
+Serialist-Grammar supports addition (`+`), subtraction (`-`), multiplication (`*`), division (`/`) and remainder (`%`) operators. Math expressions are evaluated on each value in the row with the following limitations:
 
 1. In pitch class rows, the result will be wrapped within the normal pitch class range (`0-11`) and rounded to the nearest integer
 2. In octave rows, the result will be rounded to the nearest integer
@@ -122,8 +122,11 @@ Serialist-Grammar supports addition, subtraction, multiplication and division ex
 
 Examples:
 
-	pc(1 4 5 8) + 3 // results in pc(4 7 8 e)
+	pc(1 4 5 8) + 2 // results in pc(3 6 7 t)
+	pc(1 4 5 8) - 2 // results in pc(e 2 3 6) after wrapping within 0-11
 	pc(1 4 5 8) * 2 // results in pc(2 8 t 4) after wrapping within 0-11
+	pc(1 4 5 8) / 2 // results in pc(1 2 3 4) after rounding to the nearest integer
+	pc(1 4 5 8) % 2 // results in pc(1 0 1 0)
 	dyn(0.5 0.25 0.75 2) - 0.5 // results in dyn(0 0 0.25 1) after limiting to 0-1
 	dur(1 0.5 0.5 2) - 1 // results in pc(1) after limiting to a minimum of zero and filtering zero
 	dur(1 0.5 0.5) / 0 // results in dur(1 0.5 0.5) because division by zero is ignored

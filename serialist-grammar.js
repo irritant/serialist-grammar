@@ -251,6 +251,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                 case '/':
                     f /= (val !== 0) ? val : 1;
                     break;
+                case '%':
+                    f %= val;
+                    break;
                 default:
                     break;
             }
@@ -533,7 +536,8 @@ row_slice = (
 
 row_math = (
     space*
-    op: ('+'/'-'/'*'/'/') space*
+    op: ('+' / '-' / '*' / '/' / '%')
+    space*
     val: all_types
     {
         return ['math', [op, val]];
