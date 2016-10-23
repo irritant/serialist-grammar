@@ -2,6 +2,12 @@
 
 Serialist-Grammar provides a concise syntax for the expression and transformation of rows in serial music composition.
 
+## Installation
+
+Install with npm:
+
+	npm install --save serialist-grammar
+
 ## Usage
 
 Serialist-Grammar includes a pre-compiled parser as a CommonJS module:
