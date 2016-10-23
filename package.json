@@ -11,9 +11,9 @@
     "url": "git+https://github.com/irritant/serialist-grammar.git"
   },
   "keywords": [
-    "['music'",
-    "'serialism'",
-    "'livecoding']"
+    "music",
+    "serialism",
+    "livecoding"
   ],
   "author": "Tony Wallace <tony@irritantcreative.ca>",
   "license": "GPL-3.0",
