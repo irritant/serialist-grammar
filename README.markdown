@@ -4,6 +4,17 @@ Serialist-Grammar provides a concise syntax for the expression and transformatio
 
 ## Usage
 
+Serialist-Grammar includes a pre-compiled parser as a CommonJS module:
+
+1. Require the parser:
+
+		var SerialistGrammar = require('serialist-grammar');
+
+2. Use the parser to process input according to the syntax defined below
+3. Map the parser output to your target application
+
+If you need the parser in a different module format, you can compile it with PEG.js:
+
 1. Install [PEG.js](http://pegjs.org)
 2. Use PEG.js to [generate a parser](http://pegjs.org/documentation#generating-a-parser) from `serialist-grammar.pegjs`
 3. Use the parser to process input according to the syntax defined below
