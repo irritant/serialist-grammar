@@ -6,12 +6,12 @@ Serialist-Grammar provides a concise syntax for the expression and transformatio
 
 Serialist-Grammar includes a pre-compiled parser as a CommonJS module:
 
-1. Require the parser:
+1. Require the parser and process input according to the syntax defined below
 
 		var SerialistGrammar = require('serialist-grammar');
+		var output = SerialistGrammar.parse('flat pc(0 3 1 8 7) @r');
 
-2. Use the parser to process input according to the syntax defined below
-3. Map the parser output to your target application
+2. Map the parser output to your target application
 
 If you need the parser in a different module format, you can compile it with PEG.js:
 
