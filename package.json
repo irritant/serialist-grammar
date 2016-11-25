@@ -1,6 +1,6 @@
 {
   "name": "serialist-grammar",
-  "version": "0.1.2",
+  "version": "0.2.0",
   "description": "Serialist-Grammar provides a concise syntax for the expression and transformation of rows in serial music composition.",
   "main": "dist/serialist-grammar.js",
   "scripts": {
