@@ -30,7 +30,7 @@ If you need the parser in a different module format, you can compile it with PEG
 
 ### Rows
 
-Serialist-Grammar accepts rows for pitch class, octave, dynamics and duration. Row types may be placed in any order and used as many times as you want.
+Serialist-Grammar accepts rows for pitch class, octave, dynamics, duration and arbitrary data. Row types may be placed in any order and used as many times as you want.
 
 #### Pitch Class
 
@@ -55,6 +55,12 @@ Dynamics rows consist of whitespace-delimited float values, surrounded by parent
 Duration rows consist of whitespace-delimited float values, surrounded by parenthesis and prefixed with `dur`. Duration values should be mapped to a multiple of beat/cycle duration in your target application. (`1` is equal to 1 beat, `0.5` is equal to half a beat, etc.) Values must be positive &mdash; negative values will result in a parse error and `0` values will be filtered.
 
 	dur(1 0.5 0.5 2 0) // parsed as [1, 0.5, 0.5, 2]
+
+#### Data
+
+Data rows consist of whitespace-delimited numeric values, surrounded by parenthesis and prefixed with any alphanumeric string. Data rows are indended to allow application developers to add support for arbitrary features (e.g. MIDI continuous controller messages).
+
+	cc127(32 64 96) // parsed as [32, 64, 96] with the label 'cc127'
 
 ### Transformations
 
@@ -101,6 +107,10 @@ Dynamics rows are inverted within the range `0-1`:
 Duration rows are inverted according to the equation `1 / value`:
 
 	dur(1 0.5 1.5 2) @i // inverts to dur(1 2 0.6666666666666666 0.5)
+
+Data rows are inverted using negation:
+
+	myData(1 0.5 2) @i // inverts to myData(-1 -0.5 -2)
 
 #### Rotation
 
@@ -150,9 +160,9 @@ Examples:
 
 ### Identifiers
 
-Each sequence of rows may be given an arbitrary identifier consisting of alphanumeric characters wrapped in parenthesis and prefixed with `id`:
+Each sequence of rows may be given an arbitrary identifier consisting of an alphanumeric string prefixed by `id:`:
 
-	id(sequence1) pc(1 2 5)
+	id:sequence1 pc(1 2 5)
 
 ### Flags
 
