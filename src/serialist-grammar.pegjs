@@ -28,17 +28,15 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
             return null;
         }
 
-        var flat = {
-            id: '',
-            pc: [],
-            oct: [],
-            dyn: [],
-            dur: []
-        };
+        var flat = {};
 
         voice.forEach(function(element) {
             var type = element[0];
             var val = element[1];
+
+            if (!Array.isArray(flat[type])) {
+                flat[type] = [];
+            }
 
             if (Array.isArray(val)) {
                 flat[type] = flat[type].concat(val);
@@ -206,6 +204,41 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
         return row;
     }
 
+    // Data rows:
+
+    function apply_data_row_transforms(row, transforms) {
+        transforms.forEach(function(t) {
+            var transform_name = t[0];
+            var transform_args = t[1];
+
+            // Evaluate forms:
+            if (transform_name == 'forms') {
+                row = apply_row_forms(row, transform_args, function(n) {
+                    // Negate the result:
+                    return -n;
+                });
+            }
+
+            // Evaluate math:
+            if (transform_name == 'math') {
+                row = apply_row_math(row, transform_args);
+            }
+
+            // Evaluate rotations:
+            if (transform_name == 'rotation') {
+                row = apply_row_rotation(row, transform_args);
+            }
+
+            // Evaluate slices:
+            if (transform_name == 'slice') {
+                row = apply_row_slice(row, transform_args);
+            }
+
+        });
+
+        return row;
+    }
+
     // Row forms:
 
     function apply_row_forms(row, args, inversion_transform) {
@@ -345,23 +378,17 @@ voice = (
     pitch_class_row_label /
     octave_row_label /
     dynamics_row_label /
-    duration_row_label
+    duration_row_label /
+    data_row_label
 )*
 
 // Voice identifier:
 
 voice_id_label = (
-    label: 'id' space_or_line_break
-    value: voice_id_value space_or_line_break
+    label: 'id' space_or_line_break ':' space_or_line_break
+    value: $[a-z0-9]i+ space_or_line_break
     {
         return [label, value];
-    }
-)
-
-voice_id_value = (
-    '(' space_or_line_break value: $[a-zA-Z0-9]+ space_or_line_break ')'
-    {
-        return value;
     }
 )
 
@@ -499,6 +526,38 @@ duration_row = (
     }
 )
 
+// Data row:
+
+data_row_label = (
+    label: $[a-z0-9]i+ space_or_line_break
+    row: (data_row_transform space_or_line_break)?
+    {
+        return [label, row[0]];
+    }
+)
+
+data_row_transform = (
+    row: data_row space*
+    transforms: (t:row_transform space* { return t; })*
+    {
+        if (transforms) {
+            row = apply_data_row_transforms(row, transforms);
+        }
+
+        return row;
+    }
+)
+
+data_row = (
+    '(' space*
+    head: (n:number space+ { return n; })*
+    tail: ((n:float { return n; }) / space*)
+    ')'
+    {
+        return head.concat(tail);
+    }
+)
+
 // Row transforms:
 
 row_transform = (
@@ -546,12 +605,7 @@ row_math = (
 
 // Types:
 
-all_types = (
-    float /
-    int /
-    signed_int /
-    pitch_class
-)
+all_types = (number / pitch_class)
 
 pitch_class = (
     pc: [0-9te]
@@ -567,6 +621,8 @@ pitch_class = (
     }
 )
 
+number = (signed_float / float / signed_int / int)
+signed_float = sign:'-'? f:float { return (sign) ? 0 - (+f) : +f; }
 float = f:$([0-9]* dot? [0-9]*) { return isNaN(f) ? 0 : +f }
 signed_int = sign:'-'? i:int { return (sign) ? 0 - (+i) : +i; }
 int = i:$([0-9]+) { return +i }
